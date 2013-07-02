@@ -14,9 +14,7 @@ $dbhandle = mysqli_connect($myServer, $myUser, $myPass,$myDB)
 
 
 //declare the SQL statement that will query the database
-$query = "SELECT username,password";
-$query .= "FROM user";
-$query .= "WHERE username='$uname'"; 
+$query = "SELECT $uname FROM user WHERE username='".mysql_real_escape_string($uname)."'"; 
 
 
 
