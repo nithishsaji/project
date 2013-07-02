@@ -14,20 +14,33 @@ $dbhandle = mysqli_connect($myServer, $myUser, $myPass,$myDB)
 
 
 //declare the SQL statement that will query the database
-$query = "SELECT $uname FROM user WHERE username='".mysql_real_escape_string($uname)."'"; 
+$query = "SELECT username FROM user WHERE username='".mysql_real_escape_string($uname)."'"; 
 
-
+echo "$query </br>";
 
 if (!mysqli_query($dbhandle,$query))
   {
   die('Error: ' . mysqli_error($dbhandle));
   }
+else {
 
+if ($stmt = mysqli_prepare($dbhandle, $query)) {
 
-  $dbhandle->store_result();
-  $num_of_rows = $dbhandle->num_rows;
-  echo($num_of_rows);
+    /* execute query */
+    mysqli_stmt_execute($stmt);
 
+    /* store result */
+    mysqli_stmt_store_result($stmt);
+
+    printf("Number of rows: %d.\n", mysqli_stmt_num_rows($stmt));
+
+    /* free result */
+    mysqli_stmt_free_result($stmt);
+
+    /* close statement */
+    mysqli_stmt_close($stmt);
+}
+}
 //close the connection
 mysqli_close($dbhandle);
 ?>
